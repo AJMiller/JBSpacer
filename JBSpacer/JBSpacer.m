@@ -181,11 +181,11 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
     
     _spacing = JBSpacingZero;
     
-    if (!_option || _option.itemSize == 0.0f || _option.availableSize == 0.0f) { return; }
+    if (!_option || _option.itemSize.width == 0.0f || _option.availableSize == 0.0f) { return; }
     
     CGFloat minimumMargin = _option.minimumGutter * _option.gutterToMarginRatio;
     CGFloat maximumContentWidth = _option.availableSize - (minimumMargin * 2.0f);
-    NSUInteger itemCount = (maximumContentWidth / _option.itemSize);
+    NSUInteger itemCount = (maximumContentWidth / _option.itemSize.width);
     CGFloat neededContentWidth = FLT_MAX;
     
     // Any items to consider?
@@ -195,7 +195,7 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
         while (itemCount > 0 &&
                neededContentWidth > maximumContentWidth) {
             
-            neededContentWidth = (itemCount * _option.itemSize) + ((itemCount - 1) * _option.minimumGutter);
+            neededContentWidth = (itemCount * _option.itemSize.width) + ((itemCount - 1) * _option.minimumGutter);
             
             itemCount--;
         };
@@ -205,7 +205,7 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
             
             _spacing.itemCount = itemCount + 1;
             
-            CGFloat idealGutter = ((_option.availableSize - (_spacing.itemCount * _option.itemSize)) /
+            CGFloat idealGutter = ((_option.availableSize - (_spacing.itemCount * _option.itemSize.width)) /
                                    (_spacing.itemCount + (2.0f * _option.gutterToMarginRatio) - 1.0f));
             
             // Snap values to screen scale
@@ -214,7 +214,7 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
             _spacing.gutter = JBSnapFloatToScale(idealGutter, screenScale);
             
             _spacing.extra = (_option.availableSize -
-                              ((_spacing.margin * 2.0f) + (_spacing.itemCount * _option.itemSize) + ((_spacing.itemCount - 1) * _spacing.gutter)));
+                              ((_spacing.margin * 2.0f) + (_spacing.itemCount * _option.itemSize.width) + ((_spacing.itemCount - 1) * _spacing.gutter)));
             
             // Distribute extra to the margins?
             if (_option.distributeExtraToMargins &&
@@ -286,14 +286,14 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
     NSUInteger column = index % self.spacing.itemCount;
     
     CGFloat screenScale = (_screenScale == 0.0f ? [UIScreen mainScreen].scale : _screenScale);
-    CGFloat x = JBSnapFloatToScale(self.spacing.margin + (column * self.option.itemSize) + (column * self.spacing.gutter), screenScale);
-    CGFloat y = JBSnapFloatToScale(self.spacing.margin + (row * self.option.itemSize) + (row * self.spacing.gutter), screenScale);
+    CGFloat x = JBSnapFloatToScale(self.spacing.margin + (column * self.option.itemSize.width) + (column * self.spacing.gutter), screenScale);
+    CGFloat y = JBSnapFloatToScale(self.spacing.margin + (row * self.option.itemSize.height) + (row * self.spacing.gutter), screenScale);
     
     // Lower precision
     x = JBSnapFloatToScale(x, JBLowPrecisionScale);
     y = JBSnapFloatToScale(y, JBLowPrecisionScale);
     
-    return CGRectMake(x, y, self.option.itemSize, self.option.itemSize);
+    return CGRectMake(x, y, self.option.itemSize.width, self.option.itemSize.height);
 }
 
 - (void)applySpacingToCollectionViewFlowLayout:(UICollectionViewFlowLayout *)flowLayout
@@ -307,7 +307,7 @@ CGFloat JBSnapFloatToScale(CGFloat value, CGFloat scale)
     
     flowLayout.minimumLineSpacing = gutter;
     flowLayout.minimumInteritemSpacing = gutter;
-    flowLayout.itemSize = CGSizeMake(self.option.itemSize, self.option.itemSize);
+    flowLayout.itemSize = CGSizeMake(self.option.itemSize.width, self.option.itemSize.height);
     flowLayout.sectionInset = UIEdgeInsetsMake(margin, margin, margin, marginExtra);    // Apply extra to right margin
 }
 

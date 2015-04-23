@@ -39,7 +39,7 @@
 #pragma mark - Properties
 
 /** The size of each item (in points). */
-@property (nonatomic, readwrite, assign)    CGFloat         itemSize;
+@property (nonatomic, readwrite, assign)    CGSize         itemSize;
 
 /** The minimum spacing to use between items (in points). */
 @property (nonatomic, readwrite, assign)    CGFloat         minimumGutter;
@@ -71,7 +71,7 @@
  *
  *  @return                             New spacer option with the specified settings.
  */
-+ (JBSpacerOption *)optionWithItemSize:(CGFloat)itemSize
++ (JBSpacerOption *)optionWithItemSize:(CGSize)itemSize
                          minimumGutter:(CGFloat)minimumGutter
                    gutterToMarginRatio:(CGFloat)gutterToMarginRatio
                          availableSize:(CGFloat)availableSize

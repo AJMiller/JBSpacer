@@ -33,7 +33,7 @@
 
 #pragma mark - Class methods
 
-+ (JBSpacerOption *)optionWithItemSize:(CGFloat)itemSize
++ (JBSpacerOption *)optionWithItemSize:(CGSize)itemSize
                          minimumGutter:(CGFloat)minimumGutter
                    gutterToMarginRatio:(CGFloat)gutterToMarginRatio
                          availableSize:(CGFloat)availableSize
@@ -57,7 +57,7 @@
     self = [super init];
     if (self) {
         
-        _itemSize = 0.0f;
+        _itemSize = CGSizeMake(0.0f, 0.0f);
         _minimumGutter = 0.0f;
         _gutterToMarginRatio = 0.0f;
         _availableSize = 0.0f;
@@ -68,11 +68,11 @@
 
 #pragma mark - Properties
 
-- (void)setItemSize:(CGFloat)itemSize
+- (void)setItemSize:(CGSize)itemSize
 {
-    NSCParameterAssert(itemSize >= 0.0f);
+    NSCParameterAssert(itemSize.width >= 0.0f);
     
-    if (itemSize != _itemSize) {
+    if (itemSize.width != _itemSize.width) {
         
         _itemSize = itemSize;
     }
